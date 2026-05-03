@@ -1,0 +1,860 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Persistence Predictor — Centennial College</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      :root {
+        --l_Green: #d4df38;
+        --d_Green: #464648;
+        --white: #ffffff;
+        --grey: #f7f7f7;
+        --font-size-normal: 1.4rem;
+        --time: 0.5s;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .main_title {
+        background-color: var(--d_Green);
+        position: relative;
+        display: flex;
+        color: var(--white);
+      }
+      .main_title div {
+        width: 700px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+      }
+      #main-logo {
+        height: 100%;
+      }
+
+      .white_shadow {
+        padding: 10px 60px;
+        box-shadow: inset 0px 7px 10px 0px rgba(0, 0, 0, 0.4);
+        color: var(--d_Green);
+      }
+      .white_shadow h2 {
+        font-size: 2rem;
+      }
+      .white_shadow p {
+        font-size: 1.4rem;
+        margin-top: 6px;
+      }
+
+      /* ── Section containers ── */
+      .white {
+        background-color: var(--white);
+        padding: 40px 200px;
+      }
+      .grey {
+        background-color: var(--grey);
+        padding: 40px 200px;
+      }
+
+      /* ── Section heading ── */
+      .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 24px;
+        color: var(--d_Green);
+      }
+      .section-heading h2 {
+        font-size: 2rem;
+      }
+      .fa-solid {
+        color: var(--l_Green);
+        font-size: 2.5rem;
+      }
+
+      /* ── Form fields ── */
+      .field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 24px;
+      }
+      label {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--d_Green);
+      }
+      label span.hint {
+        font-weight: normal;
+        font-size: 1rem;
+        color: #888;
+        margin-left: 8px;
+      }
+      input[type="number"],
+      select {
+        font-size: 1.2rem;
+        padding: 8px 12px;
+        border: 1.5px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 340px;
+        color: var(--d_Green);
+        transition: border-color var(--time);
+      }
+      input[type="number"]:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--l_Green);
+      }
+      .radio-group {
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+      }
+      .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: var(--d_Green);
+      }
+      input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--l_Green);
+        cursor: pointer;
+      }
+      .validation-msg {
+        font-size: 0.95rem;
+        color: #c0392b;
+        display: none;
+        margin-top: 2px;
+      }
+      .field-group.error input,
+      .field-group.error select {
+        border-color: #c0392b;
+      }
+      .field-group.error .validation-msg {
+        display: block;
+      }
+
+      /* ── Dark green bar ── */
+      .dark_green {
+        background-color: var(--l_Green);
+        color: var(--d_Green);
+        padding: 10px 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+
+      /* ── Buttons ── */
+      .buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 60px;
+        background-color: var(--white);
+        gap: 30px;
+      }
+      .buttons button {
+        height: 50px;
+        width: 200px;
+        cursor: pointer;
+        background-color: var(--l_Green);
+        color: var(--d_Green);
+        font-size: 1.5rem;
+        font-weight: bolder;
+        border: none;
+        outline: none;
+        transition:
+          background-color var(--time),
+          color var(--time),
+          outline var(--time),
+          outline-offset var(--time);
+      }
+      .buttons button:hover {
+        background-color: var(--d_Green);
+        color: var(--l_Green);
+        outline: 1px solid black;
+        outline-offset: 7px;
+      }
+      .buttons button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .buttons button.reset-btn {
+        background-color: var(--d_Green);
+        color: var(--l_Green);
+      }
+      .buttons button.reset-btn:hover {
+        background-color: var(--l_Green);
+        color: var(--d_Green);
+      }
+
+      /* ── Result card ── */
+      #result-section {
+        display: none;
+        padding: 40px 200px;
+        background-color: var(--grey);
+      }
+      .result-card {
+        border-radius: 8px;
+        padding: 32px 40px;
+        border-left: 8px solid;
+        position: relative;
+        overflow: hidden;
+      }
+      .result-card.tier-high {
+        background: #e8f8ef;
+        border-color: #2ecc71;
+      }
+      .result-card.tier-medium {
+        background: #fef9ec;
+        border-color: #f39c12;
+      }
+      .result-card.tier-low {
+        background: #fdf0ef;
+        border-color: #e74c3c;
+      }
+
+      .result-icon {
+        font-size: 3rem;
+        margin-bottom: 12px;
+        display: block;
+      }
+      .tier-high .result-icon {
+        color: #27ae60;
+      }
+      .tier-medium .result-icon {
+        color: #e67e22;
+      }
+      .tier-low .result-icon {
+        color: #c0392b;
+      }
+
+      .result-card h3 {
+        font-size: 1.8rem;
+        margin-bottom: 12px;
+        color: var(--d_Green);
+      }
+      .result-card .result-body {
+        font-size: 1.2rem;
+        color: #333;
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+      .result-card .result-action {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.6;
+        padding: 12px 16px;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.6);
+      }
+      .result-card .result-action a {
+        color: var(--d_Green);
+        font-weight: bold;
+      }
+      .probability-badge {
+        position: absolute;
+        top: 20px;
+        right: 24px;
+        font-size: 2.2rem;
+        font-weight: bold;
+        opacity: 0.15;
+        color: var(--d_Green);
+      }
+
+      /* ── Loading spinner ── */
+      #loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        font-size: 1.3rem;
+        color: var(--d_Green);
+      }
+      .spinner {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border: 3px solid var(--l_Green);
+        border-top-color: var(--d_Green);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── Footer ── */
+      footer {
+        background-color: var(--d_Green);
+        color: var(--white);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 180px;
+      }
+      .footer-content {
+        width: 75%;
+      }
+      .footer-content p {
+        text-align: center;
+        margin: 30px 0;
+        font-size: 1.4rem;
+      }
+      .links {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        border-top: 1px solid var(--l_Green);
+      }
+      .links p {
+        font-size: 1.1rem;
+        color: var(--white);
+      }
+      .links p a {
+        color: var(--grey);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ── Header ── -->
+    <header>
+      <div class="main_title">
+        <a href="https://www.centennialcollege.ca/" target="_blank">
+          <img
+            id="main-logo"
+            src="./imgs/centennialcollege_logo_horizontal_rgb.jpg"
+            alt="Centennial College logo"
+          />
+        </a>
+        <div><h1>Centennial College</h1></div>
+      </div>
+      <div class="white_shadow">
+        <h2>Student First-Year Persistence Predictor</h2>
+        <p>
+          Fill in the student profile below and click <b>Predict</b> to see how
+          likely this student is to complete their first year. All fields are
+          required unless marked optional.
+        </p>
+      </div>
+    </header>
+
+    <main>
+      <form id="predict-form" novalidate>
+        <!-- ── Section 1: Academic performance ── -->
+        <div class="white">
+          <div class="section-heading">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <h2>Academic Performance</h2>
+          </div>
+
+          <div class="field-group" id="fg-first-gpa">
+            <label for="first_term_gpa"
+              >First Term GPA <span class="hint">0.0 – 4.5</span></label
+            >
+            <input
+              type="number"
+              id="first_term_gpa"
+              name="first_term_gpa"
+              min="0"
+              max="4.5"
+              step="0.01"
+              placeholder="e.g. 3.25"
+            />
+            <span class="validation-msg"
+              >Please enter a GPA between 0.0 and 4.5</span
+            >
+          </div>
+
+          <div class="field-group" id="fg-second-gpa">
+            <label for="second_term_gpa"
+              >Second Term GPA <span class="hint">0.0 – 4.5</span></label
+            >
+            <input
+              type="number"
+              id="second_term_gpa"
+              name="second_term_gpa"
+              min="0"
+              max="4.5"
+              step="0.01"
+              placeholder="e.g. 3.10"
+            />
+            <span class="validation-msg"
+              >Please enter a GPA between 0.0 and 4.5</span
+            >
+          </div>
+
+          <div class="field-group" id="fg-hs-avg">
+            <label for="hs_avg"
+              >High School Average
+              <span class="hint">0.0 – 100.0, optional</span></label
+            >
+            <input
+              type="number"
+              id="hs_avg"
+              name="hs_avg"
+              min="0"
+              max="100"
+              step="0.1"
+              placeholder="Leave blank if unknown"
+            />
+            <span class="validation-msg">Must be between 0 and 100</span>
+          </div>
+
+          <div class="field-group" id="fg-math">
+            <label for="math_score"
+              >Math Score <span class="hint">0.0 – 50.0, optional</span></label
+            >
+            <input
+              type="number"
+              id="math_score"
+              name="math_score"
+              min="0"
+              max="50"
+              step="0.1"
+              placeholder="Leave blank if unknown"
+            />
+            <span class="validation-msg">Must be between 0 and 50</span>
+          </div>
+
+          <div class="field-group" id="fg-english">
+            <label for="english_grade"
+              >English Grade <span class="hint">CELPIP level</span></label
+            >
+            <select id="english_grade" name="english_grade">
+              <option value="">— Select level —</option>
+              <option value="1">Level 1 (130)</option>
+              <option value="2">Level 2 (131)</option>
+              <option value="3">Level 3 (140)</option>
+              <option value="4">Level 4 (141)</option>
+              <option value="5">Level 5 (150)</option>
+              <option value="6">Level 6 (151)</option>
+              <option value="7">Level 7 (160)</option>
+              <option value="8">Level 8 (161)</option>
+              <option value="9">Level 9 (170)</option>
+              <option value="10">Level 10 (171)</option>
+              <option value="11">Level 11 (180)</option>
+            </select>
+            <span class="validation-msg">Please select an English grade</span>
+          </div>
+        </div>
+
+        <!-- ── Section 2: Student profile ── -->
+        <div class="grey">
+          <div class="section-heading">
+            <i class="fa-solid fa-person-chalkboard"></i>
+            <h2>Student Profile</h2>
+          </div>
+
+          <div class="field-group" id="fg-language">
+            <label>First Language</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="first_language" value="1" /> English
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="first_language" value="2" /> Other
+                (including French)
+              </label>
+            </div>
+            <span class="validation-msg">Please select a language</span>
+          </div>
+
+          <div class="field-group" id="fg-residency">
+            <label>Residency</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="residency" value="1" /> Domestic
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="residency" value="2" /> International
+              </label>
+            </div>
+            <span class="validation-msg">Please select residency</span>
+          </div>
+
+          <div class="field-group" id="fg-gender">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="">— Select —</option>
+              <option value="1">Female</option>
+              <option value="2">Male</option>
+            </select>
+            <span class="validation-msg">Please select gender</span>
+          </div>
+
+          <div class="field-group" id="fg-age">
+            <label for="age_group">Age Group</label>
+            <select id="age_group" name="age_group">
+              <option value="">— Select —</option>
+              <option value="1">0 – 18</option>
+              <option value="2">19 – 20</option>
+              <option value="3">21 – 25</option>
+              <option value="4">26 – 30</option>
+              <option value="5">31 – 35</option>
+              <option value="6">36 – 40</option>
+              <option value="7">41 – 50</option>
+              <option value="8">51 – 60</option>
+              <option value="9">61 – 65</option>
+              <option value="10">66+</option>
+            </select>
+            <span class="validation-msg">Please select age group</span>
+          </div>
+
+          <div class="field-group" id="fg-prev-ed">
+            <label>Previous Education</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="prev_education" value="1" /> High
+                School
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="prev_education" value="2" />
+                Post-Secondary
+              </label>
+            </div>
+            <span class="validation-msg">Please select previous education</span>
+          </div>
+        </div>
+
+        <!-- ── Section 3: Program info ── -->
+        <div class="white">
+          <div class="section-heading">
+            <i class="fa-solid fa-circle-info"></i>
+            <h2>Program Information</h2>
+          </div>
+
+          <div class="field-group" id="fg-funding">
+            <label for="funding">Funding Type</label>
+            <select id="funding" name="funding">
+              <option value="">— Select —</option>
+              <option value="1">Apprentice PS</option>
+              <option value="2">GPOG FT</option>
+              <option value="3">International Offshore</option>
+              <option value="4">International Regular</option>
+              <option value="5">International Transfer</option>
+              <option value="6">Joint Program Ryerson</option>
+              <option value="7">Joint Program UTSC</option>
+              <option value="8">Second Career Program</option>
+              <option value="9">Work Safety Insurance Board</option>
+            </select>
+            <span class="validation-msg">Please select funding type</span>
+          </div>
+
+          <div class="field-group" id="fg-fasttrack">
+            <label>Fast Track</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="fast_track" value="1" /> Yes
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="fast_track" value="2" /> No
+              </label>
+            </div>
+            <span class="validation-msg">Please select fast track option</span>
+          </div>
+
+          <div class="field-group" id="fg-coop">
+            <label>Co-op</label>
+            <div class="radio-group">
+              <label class="radio-option">
+                <input type="radio" name="coop" value="1" /> Yes
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="coop" value="2" /> No
+              </label>
+            </div>
+            <span class="validation-msg">Please select co-op option</span>
+          </div>
+        </div>
+
+        <!-- ── Buttons ── -->
+        <div class="buttons">
+          <button type="submit" id="predict-btn">
+            <i class="fa-solid fa-brain" style="margin-right: 8px"></i> PREDICT
+          </button>
+          <button type="reset" class="reset-btn" onclick="resetForm()">
+            <i class="fa-solid fa-rotate-left" style="margin-right: 8px"></i>
+            RESET
+          </button>
+        </div>
+      </form>
+
+      <!-- ── Loading indicator ── -->
+      <div id="loading">
+        <span class="spinner"></span> Analysing student profile...
+      </div>
+
+      <!-- ── Result card ── -->
+      <div id="result-section">
+        <div class="section-heading">
+          <i class="fa-solid fa-chart-simple"></i>
+          <h2>Prediction Result</h2>
+        </div>
+        <div id="result-card" class="result-card">
+          <span class="probability-badge" id="result-pct"></span>
+          <i class="fa-solid result-icon" id="result-icon"></i>
+          <h3 id="result-title"></h3>
+          <p class="result-body" id="result-body"></p>
+          <p class="result-action" id="result-action"></p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer>
+      <div class="footer-content">
+        <p>
+          <i
+            >Empowering students through data — Centennial College Neural
+            Networks Project</i
+          >
+        </p>
+        <div class="links">
+          <p>
+            <b>Web:</b>
+            <a href="https://www.centennialcollege.ca/" target="_blank"
+              >www.centennialcollege.ca</a
+            >
+          </p>
+          <p>
+            <b>Support:</b>
+            <a href="mailto:continuingeducation@centennialcollege.ca"
+              >continuingeducation@centennialcollege.ca</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // ── Backend URL ──
+      const API_URL = "http://127.0.0.1:8000/predict";
+
+      // ── Validation helpers ──
+      function validateField(id, condition) {
+        const fg = document.getElementById(id);
+        if (!fg) return condition;
+        if (!condition) fg.classList.add("error");
+        else fg.classList.remove("error");
+        return condition;
+      }
+
+      function validateForm() {
+        let valid = true;
+
+        // Numeric inputs with range checks
+        const firstGpa = parseFloat(
+          document.getElementById("first_term_gpa").value,
+        );
+        valid &= validateField(
+          "fg-first-gpa",
+          !isNaN(firstGpa) && firstGpa >= 0 && firstGpa <= 4.5,
+        );
+
+        const secondGpa = parseFloat(
+          document.getElementById("second_term_gpa").value,
+        );
+        valid &= validateField(
+          "fg-second-gpa",
+          !isNaN(secondGpa) && secondGpa >= 0 && secondGpa <= 4.5,
+        );
+
+        const hsAvg = document.getElementById("hs_avg").value;
+        if (hsAvg !== "") {
+          const v = parseFloat(hsAvg);
+          valid &= validateField("fg-hs-avg", !isNaN(v) && v >= 0 && v <= 100);
+        } else {
+          validateField("fg-hs-avg", true);
+        }
+
+        const math = document.getElementById("math_score").value;
+        if (math !== "") {
+          const v = parseFloat(math);
+          valid &= validateField("fg-math", !isNaN(v) && v >= 0 && v <= 50);
+        } else {
+          validateField("fg-math", true);
+        }
+
+        // Selects
+        valid &= validateField(
+          "fg-english",
+          document.getElementById("english_grade").value !== "",
+        );
+        valid &= validateField(
+          "fg-gender",
+          document.getElementById("gender").value !== "",
+        );
+        valid &= validateField(
+          "fg-age",
+          document.getElementById("age_group").value !== "",
+        );
+        valid &= validateField(
+          "fg-funding",
+          document.getElementById("funding").value !== "",
+        );
+
+        // Radio groups
+        const lang = document.querySelector(
+          'input[name="first_language"]:checked',
+        );
+        const res = document.querySelector('input[name="residency"]:checked');
+        const prev = document.querySelector(
+          'input[name="prev_education"]:checked',
+        );
+        const fast = document.querySelector('input[name="fast_track"]:checked');
+        const coop = document.querySelector('input[name="coop"]:checked');
+        valid &= validateField("fg-language", !!lang);
+        valid &= validateField("fg-residency", !!res);
+        valid &= validateField("fg-prev-ed", !!prev);
+        valid &= validateField("fg-fasttrack", !!fast);
+        valid &= validateField("fg-coop", !!coop);
+
+        return !!valid;
+      }
+
+      function collectPayload() {
+        return {
+          first_term_gpa: parseFloat(
+            document.getElementById("first_term_gpa").value,
+          ),
+          second_term_gpa: parseFloat(
+            document.getElementById("second_term_gpa").value,
+          ),
+          first_language: parseInt(
+            document.querySelector('input[name="first_language"]:checked')
+              .value,
+          ),
+          funding: parseInt(document.getElementById("funding").value),
+          fast_track: parseInt(
+            document.querySelector('input[name="fast_track"]:checked').value,
+          ),
+          coop: parseInt(
+            document.querySelector('input[name="coop"]:checked').value,
+          ),
+          residency: parseInt(
+            document.querySelector('input[name="residency"]:checked').value,
+          ),
+          gender: parseInt(document.getElementById("gender").value),
+          prev_education: parseInt(
+            document.querySelector('input[name="prev_education"]:checked')
+              .value,
+          ),
+          age_group: parseInt(document.getElementById("age_group").value),
+          hs_avg:
+            document.getElementById("hs_avg").value !== ""
+              ? parseFloat(document.getElementById("hs_avg").value)
+              : null,
+          math_score:
+            document.getElementById("math_score").value !== ""
+              ? parseFloat(document.getElementById("math_score").value)
+              : null,
+          english_grade: parseInt(
+            document.getElementById("english_grade").value,
+          ),
+        };
+      }
+
+      function showResult(data) {
+        const tierIcons = {
+          high: "fa-star",
+          medium: "fa-hand-holding-heart",
+          low: "fa-life-ring",
+        };
+
+        const card = document.getElementById("result-card");
+        card.className = `result-card tier-${data.message_tier}`;
+
+        document.getElementById("result-pct").textContent =
+          `${data.confidence_pct}%`;
+        document.getElementById("result-icon").className =
+          `fa-solid result-icon ${tierIcons[data.message_tier]}`;
+        document.getElementById("result-title").textContent =
+          data.message_title;
+        document.getElementById("result-body").textContent = data.message_body;
+        document.getElementById("result-action").innerHTML =
+          data.message_action.replace(
+            "continuingeducation@centennialcollege.ca",
+            '<a href="mailto:continuingeducation@centennialcollege.ca">continuingeducation@centennialcollege.ca</a>',
+          );
+
+        document.getElementById("result-section").style.display = "block";
+        document
+          .getElementById("result-section")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      // ── Form submission ──
+      document
+        .getElementById("predict-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (!validateForm()) return;
+
+          document.getElementById("predict-btn").disabled = true;
+          document.getElementById("loading").style.display = "block";
+          document.getElementById("result-section").style.display = "none";
+
+          try {
+            const payload = collectPayload();
+            const response = await fetch(API_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+              const err = await response.json();
+              alert(`Backend error: ${err.detail || "Unknown error"}`);
+              return;
+            }
+
+            const data = await response.json();
+            showResult(data);
+          } catch (err) {
+            alert(
+              "Could not reach the backend.\n\n" +
+                "Make sure the backend is running:\n" +
+                "  cd backend\n" +
+                "  uvicorn predict:app --reload",
+            );
+          } finally {
+            document.getElementById("predict-btn").disabled = false;
+            document.getElementById("loading").style.display = "none";
+          }
+        });
+
+      function resetForm() {
+        document.getElementById("result-section").style.display = "none";
+        document
+          .querySelectorAll(".field-group.error")
+          .forEach((el) => el.classList.remove("error"));
+      }
+    </script>
+  </body>
+</html>
