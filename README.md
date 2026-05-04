@@ -41,7 +41,7 @@ Developed independently as part of my Software Engineering + Artificial Intellig
 
 ## High Confidence Prediction
 
-![High Confidence](./resources/02-high-confidence.png)
+![High Confidence](./resources/04-high-confidence.png)
 
 ## Medium Risk Prediction
 
@@ -49,7 +49,7 @@ Developed independently as part of my Software Engineering + Artificial Intellig
 
 ## Early Support Alert
 
-![Low Confidence](./resources/04-low-confidence.png)
+![Low Confidence](./resources/02-risk-alert.png)
 
 ---
 
