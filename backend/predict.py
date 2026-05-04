@@ -2,8 +2,12 @@
 Student Persistence Predictor — FastAPI Backend (v2 — fixed feature alignment)
 ===============================================================================
 How to run:
-    pip install fastapi uvicorn tensorflow scikit-learn joblib numpy
+    You need to be sure to have a Python Version supported by TensorFlow 2.12 (e.g. Python 3.10 or 3.12) and then install the dependencies:
+    pip install scikit-learn==1.6.1
+    pip install fastapi uvicorn tensorflow joblib numpy
     uvicorn predict:app --reload --port 8000
+    or, if you're running from the backend directory:
+    uvicorn backend.predict:app --reload --port 8000
 
 Visit http://localhost:8000 to verify the API is running.
 Visit http://localhost:8000/docs to test it interactively.
