@@ -56,14 +56,14 @@ Developed independently as part of my Software Engineering + Artificial Intellig
 #  System Architecture
 
 <p align="center">
-  <img src="./resources/project_architecture.png" width="1000">
+  <img src="./resources/Project_Architecture.png" width="1000">
 </p>
 
 ---
 
 #  Machine Learning Highlights
 
-This solution was developed through **32 neural network experiments** to identify the best architecture and classification threshold. :contentReference[oaicite:1]{index=1}
+This solution was developed through **32 neural network experiments** to identify the best architecture and classification threshold. 
 
 ### Final Model Performance
 
@@ -76,6 +76,24 @@ This solution was developed through **32 neural network experiments** to identif
 | Framework | TensorFlow / Keras |
 
 ---
+
+# Model Training Insights
+
+## Confusion Matrix
+
+![Confusion Matrix](./resources/confusion_matrix.png)
+
+## ROC Curve
+
+![ROC Curve](./resources/roc_curve.png)
+
+## Training Performance
+
+![Training History](./resources/training_history.png)
+
+## Threshold Optimization
+
+![Threshold](./resources/threshold_tuning.png)
 
 #  Features
 
@@ -114,9 +132,9 @@ Features:
 
 Built using:
 
-- :contentReference[oaicite:2]{index=2}
-- :contentReference[oaicite:3]{index=3}
-- :contentReference[oaicite:4]{index=4}
+- FastAPI
+- TensorFlow
+- Scikit-learn
 - NumPy
 - Joblib
 
@@ -147,7 +165,7 @@ http://127.0.0.1:8000/docs
 
 Powered by:
 
-:contentReference[oaicite:5]{index=5}
+**Swagger UI — Interactive API Testing**
 
 ---
 
